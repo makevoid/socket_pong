@@ -9,6 +9,8 @@ var osc = require('node-osc')
 
 var client = new osc.Client('127.0.0.1', 6543)
 
+var max_clients = 10
+
 
 app.listen(80)
 
@@ -19,20 +21,40 @@ function handler (req, res) {
       res.writeHead(500)
       return res.end('Error loading index.html')
     }
-
+    
+    // Qui funzione per check se i max_clients sono tutti occupati. Nel caso fa redirect ad una pagina che refresha sull'url principale ogni minuto
+    // if ( totalClients? >= max_clients){
+    // location.href('retry.html');
+    //}
+	
+	
+	// Se ci sono client_slot liberi facciamo partire l'app sulla pagina web
     res.writeHead(200)
     res.end(data)
   })
 }
 
 
-
 io.sockets.on('connection', function (socket) {
-  socket.emit('accelerometer', { hello: 'world' })
+  
+  socket.emit('accelerometer', socket.id)
+  // alla connessione andrebbe fatto penso il 
 
   socket.on('osc', function(data){
-
-    client.send('/oscAddress', 200)
+  
+    
+	console.log(data.X)
+	console.log(data.Y)
+	console.log(data.Z)
+	
+	//console.log(process.getuid())
+	console.log(socket.id);
+	
+	var clientId = socket.id
+	
+    client.send('/oscAddressMulti', clientId, data.X, data.Y, data.Z)
+    
+    //Qui probabilmente va fatto un loop assegnado i clients e con un max_clients
 
   })
 

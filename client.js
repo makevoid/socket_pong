@@ -1,5 +1,8 @@
 // configs
 
+//var io_host = 'http://192.168.1.101:80'
+var io_host = 'http://127.0.0.1:80'
+
 // var polling_time = 20
 var polling_time = 1000
 
@@ -29,27 +32,26 @@ var debugOrientation = function(o){
 
 window.addEventListener("deviceorientation", onDeviceOrientation)
 
-
-// websocket
-
-// var exampleSocket = new WebSocket("ws://", "protocolOne");
-
-
+var browserTest = {X:15, Y:30, Z:45}
 
 // socket.io
 
-var socket = io.connect('http://192.168.1.101:80')
+var socket = io.connect(io_host)
 
 socket.on(channel_name, function (data) {
-  console.log(data)
+  
+  //console.log(data)
+  debug.innerHTML = "Your node.js ID: "+data
 
   setInterval(function(){
-    //socket.emit('my other event', orientation)
 
-    socket.emit('osc', 'values')
+    //socket.emit('osc', orientation)
+    socket.emit('osc', browserTest);
 
   }, polling_time)
 })
+
+
 
 var debug = document.querySelector(".debug")
 
