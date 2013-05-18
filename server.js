@@ -38,20 +38,22 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
   
   socket.emit('accelerometer', socket.id)
-  // alla connessione andrebbe fatto penso il 
+  // alla connessione andrebbe fatto check max_clients
 
   socket.on('osc', function(data){
   
     
-	console.log(data.X)
-	console.log(data.Y)
-	console.log(data.Z)
+//    console.log(socket.id)
+//    
+//	console.log(data.X)
+//	console.log(data.Y)
+//	console.log(data.Z)
 	
-	//console.log(process.getuid())
-	console.log(socket.id);
+	
 	
 	var clientId = socket.id
 	
+    //client.send('/oscAddress', clientId, data.X, data.Y, data.Z)
     client.send('/oscAddressMulti', clientId, data.X, data.Y, data.Z)
     
     //Qui probabilmente va fatto un loop assegnado i clients e con un max_clients

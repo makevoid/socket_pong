@@ -4,7 +4,7 @@
 var io_host = 'http://127.0.0.1:80'
 
 // var polling_time = 20
-var polling_time = 1000
+var polling_time = 50
 
 // device orientation
 var orientation
@@ -32,10 +32,9 @@ var debugOrientation = function(o){
 
 window.addEventListener("deviceorientation", onDeviceOrientation)
 
-var browserTest = {X:15, Y:30, Z:45}
+
 
 // socket.io
-
 var socket = io.connect(io_host)
 
 socket.on(channel_name, function (data) {
@@ -44,9 +43,24 @@ socket.on(channel_name, function (data) {
   debug.innerHTML = "Your node.js ID: "+data
 
   setInterval(function(){
+	
+	
+	
+      if(orientation){
+        debug.innerHTML = data + " -> " + orientation
+      	socket.emit('osc', orientation)
+      } else {
+      	
+      	
+      	var forceX = parseInt('0'+document.querySelector("input[name=X]").value)
+      	var forceY = parseInt('0'+document.querySelector("input[name=Y]").value)
+      	var forceZ = parseInt('0'+document.querySelector("input[name=Z]").value)
+        var browserTest = {X:forceX, Y:forceY, Z:forceZ}
+      
+      	debug.innerHTML = data + ":" +" X: "+ browserTest.X +" Y: "+ browserTest.Y +" Z: "+ browserTest.Z
+      	socket.emit('osc', browserTest)
+      }
 
-    //socket.emit('osc', orientation)
-    socket.emit('osc', browserTest);
 
   }, polling_time)
 })
@@ -54,6 +68,10 @@ socket.on(channel_name, function (data) {
 
 
 var debug = document.querySelector(".debug")
+
+//console.log(document.querySelector("input[name=X]").value)
+//console.log(document.querySelector("input[name=X]").value)
+//console.log(document.querySelector("input[name=X]").value)
 
 // if (window.DeviceOrientationEvent) {
 //  debug.innerHTML = "DeviceOrientation is supported"
