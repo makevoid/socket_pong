@@ -1,0 +1,1 @@
+var channel_name = "accelerometer"
