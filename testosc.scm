@@ -1,9 +1,13 @@
 (osc-source "6543")
 
-(define max_clients 10)
+(define max_clients 20)
+(define actualClients 0)
+
+(define tmpClients (vector 0))
+
 (define Shape (build-cube))
 
-;(define clients (vector)))
+(define clients (vector 0))
 
 
 (define (phone2cube X Y Z)
@@ -48,6 +52,74 @@
 ;)
 
 
+(define (testFor)
+
+	(for ([j 10])
+
+		;(print j)
+
+		(if (>= j 8)
+
+			(print "sforato")
+			
+			(print j)
+		
+		)
+
+	)
+
+)
+
+
+
+(define (attachClient client_id)
+	
+	
+	
+	;(if (member client_id clients)
+		;;;;;Per vector-append serve racket/vectors e non è detto che funzioni
+		;;;;;(vector-append clients (vector client_id))
+		;add client_id to clients
+		
+		(set! actualClients (vector-length clients))
+		
+		(set! tmpClients clients)
+		
+		;(print tmpClients)
+		
+		(set! clients (make-vector (+ 1 actualClients)))
+		
+		
+		(for ([i actualClients])
+			
+			(vector-set! clients i (vector-ref tmpClients i))
+;			(print i)
+;			(print actualClients)
+;			(newline)
+;			
+;			(print (vector-ref tmpClients i))
+;			(newline)
+			
+			(if (< i actualClients)
+				
+				(print i);(vector-set! clients i (vector-ref tmpClients i))
+				
+				(print "ultimo");(vector-set! clients i client_id)
+						
+			)
+
+			;(vector-set! clients i client_id)
+			;(set! clients (build-vector actualClients (vector-ref clients i)))
+			;(vector-set! clients actualClients client_id)
+		)
+		
+		
+		(vector-set! clients actualClients client_id)
+		
+		
+	;)
+
+)
 
 
 ;(define (detachClient client_id)
@@ -57,21 +129,32 @@
 ;)
 
 
-;(define (clients2cubes client_id X Y Z)
+(define (clients2cubes client_id X Y Z)
 
-;;NO! ANDREBBE TROVATO IL MODO DI NON ITERARE clients AD OGNI CICLO
-;;    (for ([i clients])    
-;;            
+	;NO! ANDREBBE TROVATO IL MODO DI NON ITERARE clients AD OGNI CICLO
+    (for ([i clients])
+        
+;;        (if (>= max_clients (vector-length clients))
+;;        	
+;;        	#f
+;;        
+;;        )
+        
 ;;        (if (member client_id clients)
-;;            (with-state
-;;                (rotate (vector X Y Z))
-;;                (draw-instance Shape)
-;;            )
-;;            
 ;;        )
-;;        )
-
-;)
+            
+;;            (define activeClient (vector-ref clients i))
+            
+            
+            (begin (display i))
+            
+            (with-state
+            	(translate (vector i i i))
+                (rotate (vector X Y Z))
+                (draw-instance Shape)
+            )
+    )
+)
 
 
 (every-frame
@@ -88,7 +171,6 @@
         
             (phone2cube (osc 1) (osc 2) (osc 3))
             (begin (display (osc 0)) (newline) (display "X:") (display (osc 1)) (display "Y:") (display (osc 2)) (display "Z:")(display (osc 3)) (newline))
-        
         ;(clients2cubes (osc 0) (osc 1) (osc 2) (osc 3))
         )
         
