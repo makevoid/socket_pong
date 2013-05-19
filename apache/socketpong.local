@@ -1,0 +1,18 @@
+<VirtualHost *:80>
+	
+	ServerName socketpong.local
+	ServerAlias 192.168.42.102
+
+DocumentRoot /var/www/socket_pong
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/socket_pong/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+
+</VirtualHost>
