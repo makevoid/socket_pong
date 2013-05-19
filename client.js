@@ -25,7 +25,7 @@ var onDeviceOrientation = function(orientData){
 }
 
 var debugOrientation = function(o){
-  debug.innerHTML = Math.round(o.x)+", "+Math.round(o.y)+", "+Math.round(o.z)
+  debug.innerHTML = Math.floor(o.x)+", "+Math.floor(o.y)+", "+Math.floor(o.z)
 }
 
 

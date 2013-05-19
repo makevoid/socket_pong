@@ -9,6 +9,7 @@
 (define (phone2cube X Y Z)
     
     (with-state
+        (colour (vector (abs (* 0.1 X)) (abs(* 0.1 Y)) (abs (* 0.1 Z))))
         (rotate (vector X Y Z))
         (draw-instance Shape)
     )
