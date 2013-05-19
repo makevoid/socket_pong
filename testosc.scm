@@ -7,11 +7,11 @@
 
 
 (define (phone2cube X Y Z)
-	
-	;(with-state
-		(rotate (vector X Y Z))
-		(draw-instance Shape)
-	;)
+    
+    (with-state
+        (rotate (vector X Y Z))
+        (draw-instance Shape)
+    )
 
 )
 
@@ -51,7 +51,7 @@
 
 ;(define (detachClient client_id)
 
-;	;remove client_id from clients
+;    ;remove client_id from clients
 
 ;)
 
@@ -59,16 +59,16 @@
 ;(define (clients2cubes client_id X Y Z)
 
 ;;NO! ANDREBBE TROVATO IL MODO DI NON ITERARE clients AD OGNI CICLO
-;;	(for ([i clients])	
-;;    		
-;;		(if (member client_id clients)
-;;			(with-state
-;;				(rotate (vector X Y Z))
-;;				(draw-instance Shape)
-;;			)
-;;			
-;;		)
-;;    	)
+;;    (for ([i clients])    
+;;            
+;;        (if (member client_id clients)
+;;            (with-state
+;;                (rotate (vector X Y Z))
+;;                (draw-instance Shape)
+;;            )
+;;            
+;;        )
+;;        )
 
 ;)
 
@@ -85,16 +85,16 @@
         ; utilizzare parametro OSC 0 per assegnare id_client
         (when (osc-msg "/oscAddressMulti")
         
-        	(phone2cube (osc 1) (osc 2) (osc 3))
-        	(begin (display (osc 0)) (newline) (display "X:") (display (osc 1)) (display "Y:") (display (osc 2)) (display "Z:")(display (osc 3)) (newline))
-		
-		;(clients2cubes (osc 0) (osc 1) (osc 2) (osc 3))
+            (phone2cube (osc 1) (osc 2) (osc 3))
+            (begin (display (osc 0)) (newline) (display "X:") (display (osc 1)) (display "Y:") (display (osc 2)) (display "Z:")(display (osc 3)) (newline))
+        
+        ;(clients2cubes (osc 0) (osc 1) (osc 2) (osc 3))
         )
         
         
 ;        (when (osc-msg "/detachClient")
-;        	; Passare come unico parametro osc l'id del client socket.id
-;        	;(detachClient (osc 0))
+;            ; Passare come unico parametro osc l'id del client socket.id
+;            ;(detachClient (osc 0))
 ;        )
     )
 )

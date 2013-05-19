@@ -1,10 +1,10 @@
 // configs
 
 //var io_host = 'http://192.168.1.101:80'
-var io_host = 'http://127.0.0.1:80'
+var io_host = 'http://192.168.42.102:80'
 
 // var polling_time = 20
-var polling_time = 50
+var polling_time = 120
 
 // device orientation
 var orientation
@@ -13,11 +13,11 @@ var beta
 var gamma
 
 var onDeviceOrientation = function(orientData){
-  x = orientData.alpha
-  y = orientData.beta
-  z = orientData.gamma
+  x = Math.round(orientData.alpha)
+  y = Math.round(orientData.beta)
+  z = Math.round(orientData.gamma)
 
-  orientation = { x: x, y: y, z: z }
+  orientation = { X:x, Y:y, Z:z }
 
   debugOrientation(orientation)
 
@@ -43,14 +43,11 @@ socket.on(channel_name, function (data) {
   debug.innerHTML = "Your node.js ID: "+data
 
   setInterval(function(){
-	
-	
-	
+      
       if(orientation){
-        debug.innerHTML = data + " -> " + orientation
+        debug.innerHTML = data + " -> " + orientation.X + orientation.Y + orientation.Z
       	socket.emit('osc', orientation)
       } else {
-      	
       	
       	var forceX = parseInt('0'+document.querySelector("input[name=X]").value)
       	var forceY = parseInt('0'+document.querySelector("input[name=Y]").value)
