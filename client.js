@@ -1,7 +1,7 @@
 // configs
 
 //var io_host = 'http://192.168.1.101:80'
-var io_host = 'http://192.168.42.102:80'
+var io_host = 'http://192.168.42.102:8888'
 
 // var polling_time = 20
 var polling_time = 120

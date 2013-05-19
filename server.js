@@ -12,7 +12,7 @@ var client = new osc.Client('127.0.0.1', 6543)
 var max_clients = 10
 
 
-app.listen(80)
+app.listen(8888)
 
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
