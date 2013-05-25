@@ -1,3 +1,10 @@
+// configs
+
+var settings_ip_port = "192.168.0.111:3000"
+
+
+//main
+
 var sys  = require('sys'),
     exec = require('child_process').exec
 
@@ -11,8 +18,20 @@ var client = new osc.Client('127.0.0.1', 6543)
 
 var max_clients = 10
 
+var contents
 
-app.listen(8888)
+fs.readFile("./index.tmpl.html", 'utf8', function(err, contents) {
+  if (err) throw err
+
+	contents = contents.replace(/IP:PORT/g, settings_ip_port)
+
+	fs.writeFile("./index.html", contents)
+})
+
+
+
+
+app.listen(80)
 
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
@@ -52,10 +71,11 @@ io.sockets.on('connection', function (socket) {
 	
 	
 	var clientId = socket.id
-	
     //client.send('/oscAddress', clientId, data.X, data.Y, data.Z)
     client.send('/oscAddressMulti', clientId, data.X, data.Y, data.Z)
-    
+    // console.log(data)
+		
+		
     //Qui probabilmente va fatto un loop assegnado i clients e con un max_clients
 
   })
@@ -67,8 +87,22 @@ io.sockets.on('connection', function (socket) {
   //   //   console.log(stdout)
   //   // })
   // })
+	
+
+	socket.on('disconnect',  function(data) {
+  
+		console.log(socket.id + " disconnected")
+		
+		var clientId = socket.id
+		client.send('/detachClient', clientId)
+	
+	})
 
 })
+
+
+
+
 
 
 

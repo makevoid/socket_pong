@@ -235,19 +235,23 @@
     
     (if (member client_id (vector->list clients))
     	(set! counter 0)
-	(attachClient client_id)
+	    (attachClient client_id)
     )
     
 )
 
 
 (every-frame
+	
+	
+  
+	
     (with-state
-;        (when (osc-msg "/oscAddress")
-;             (begin (display (osc 0)) (newline))
-;             (begin (display (osc 1)) (newline))
-;             (begin (display (osc 2)) (newline))
-;        )
+        ;(when (osc-msg "/oscAddressMulti")
+        ;     (begin (display (osc 0)) (newline))
+        ;     (begin (display (osc 1)) (newline))
+        ;     (begin (display (osc 2)) (newline))
+        ;)
         
         
         ; utilizzare parametro OSC 0 per assegnare id_client
@@ -263,11 +267,13 @@
         
         ;)
         
-        
-;        (when (osc-msg "/detachClient")
-;            ; Passare come unico parametro osc l'id del client socket.id
-;            ;(detachClient (osc 0))
-;        )
+			  (when (osc-msg "/detachClient")
+			      ; Passare come unico parametro osc l'id del client socket.id
+			
+						(begin (display (osc 0)))
+			      (detachClient (osc 0))
+			  )    
+
 
 	(when (osc-msg "/oscAddressMulti")
 		(set! oscID (osc 0))
@@ -276,9 +282,9 @@
 		(set! oscZ (osc 3))
 	)
 
-	;(clientsDemux oscID oscX oscY oscZ)
+	
 	(startClients oscID oscX oscY oscZ)
+	;(phone2cube oscX oscY oscZ)
 
-
-    )
+  )
 )

@@ -1,32 +1,34 @@
 // configs
 
 //var io_host = 'http://192.168.1.101:80'
-var io_host = 'http://192.168.42.102:8888'
+var io_host = 'http://192.168.0.111:80'
 
 // var polling_time = 20
-var polling_time = 120
+var polling_time = 20
 
 // device orientation
-var orientation
+var orient
 var alpha
 var beta
 var gamma
 
 var onDeviceOrientation = function(orientData){
-  x = Math.round(orientData.alpha)
-  y = Math.round(orientData.beta)
-  z = Math.round(orientData.gamma)
 
-  orientation = { X:x, Y:y, Z:z }
+  var x = orientData.alpha
+  var y = orientData.beta
+  var z = orientData.gamma
 
-  debugOrientation(orientation)
+  orient = { X:x, Y:y, Z:z }
 
+  // debugOrientation(orient)
+	
   // socket.send?(channel_name, { alpha: alpha, beta: beta, gamma: gamma })
 }
 
 var debugOrientation = function(o){
-  debug.innerHTML = Math.floor(o.x)+", "+Math.floor(o.y)+", "+Math.floor(o.z)
+  debug.innerHTML = Math.floor(o.X)+", "+Math.floor(o.Y)+", "+Math.floor(o.Z)
 }
+
 
 
 
@@ -44,11 +46,15 @@ socket.on(channel_name, function (data) {
 
   setInterval(function(){
       
-      if(orientation){
-        debug.innerHTML = data + " -> " + orientation.X + orientation.Y + orientation.Z
-      	socket.emit('osc', orientation)
+		
+			
+      if(orient && orient.X){
+        //debug.innerHTML = data + " -> " + orient.X + orient.Y + orient.Z
+      	socket.emit('osc', orient)
       } else {
       	
+				return
+				
       	var forceX = parseInt('0'+document.querySelector("input[name=X]").value)
       	var forceY = parseInt('0'+document.querySelector("input[name=Y]").value)
       	var forceZ = parseInt('0'+document.querySelector("input[name=Z]").value)
@@ -75,5 +81,5 @@ var debug = document.querySelector(".debug")
 // } else if (window.OrientationEvent) {
 //  debug.innerHTML = "MozOrientation is supported"
 // }
-
+// 
 
