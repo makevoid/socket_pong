@@ -3,15 +3,13 @@
 (define max_clients 20)
 (define actualClients 0)
 
-(define tmpClients (make-vector 0))
-
-(define Shape (with-state (build-cube)))
-(with-primitive Shape (hide 1))
-
 (define clients (make-vector 0))
+(define tmpClients (make-vector 0))
 (define activeClients (make-vector 0))
 (define tmpActive (make-vector 0))
 
+(define Shape (with-state (build-cube)))
+(with-primitive Shape (hide 1))
 
 (define oscID #f)
 (define oscX 0)
@@ -267,12 +265,12 @@
         
         ;)
         
-			  (when (osc-msg "/detachClient")
-			      ; Passare come unico parametro osc l'id del client socket.id
-			
-						(begin (display (osc 0)))
-			      (detachClient (osc 0))
-			  )    
+	  (when (osc-msg "/detachClient")
+	      ; Passare come unico parametro osc l'id del client socket.id
+
+		(begin (display (osc 0)) (newline))
+		(detachClient (osc 0))
+	  )    
 
 
 	(when (osc-msg "/oscAddressMulti")

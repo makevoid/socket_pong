@@ -1,10 +1,10 @@
 // configs
 
-//var io_host = 'http://192.168.1.101:80'
-var io_host = 'http://192.168.0.111:80'
+//var io_host = 'http://192.168.0.111:3000'
+var io_host = 'http://socketpong.local:8888'
 
 // var polling_time = 20
-var polling_time = 20
+var polling_time = 100 // 200=5fps | 100=10fps | 50=20fps | 40=25fps | 33.33=~30fps
 
 // device orientation
 var orient
@@ -34,17 +34,18 @@ var debugOrientation = function(o){
 
 window.addEventListener("deviceorientation", onDeviceOrientation)
 
+var myLoop = false
 
 
 // socket.io
 var socket = io.connect(io_host)
 
-socket.on(channel_name, function (data) {
+  socket.on('startAccelerometer', function (data) {
   
   //console.log(data)
   debug.innerHTML = "Your node.js ID: "+data
 
-  setInterval(function(){
+  myLoop = setInterval(function(){
       
 		
 			
@@ -52,8 +53,6 @@ socket.on(channel_name, function (data) {
         //debug.innerHTML = data + " -> " + orient.X + orient.Y + orient.Z
       	socket.emit('osc', orient)
       } else {
-      	
-				return
 				
       	var forceX = parseInt('0'+document.querySelector("input[name=X]").value)
       	var forceY = parseInt('0'+document.querySelector("input[name=Y]").value)
@@ -62,12 +61,20 @@ socket.on(channel_name, function (data) {
       
       	debug.innerHTML = data + ":" +" X: "+ browserTest.X +" Y: "+ browserTest.Y +" Z: "+ browserTest.Z
       	socket.emit('osc', browserTest)
+      	
       }
 
 
   }, polling_time)
 })
 
+
+socket.on('disconnect',  function(data) {
+		
+		clearInterval(myLoop)
+		socket.emit('detachMe')
+
+	})
 
 
 var debug = document.querySelector(".debug")

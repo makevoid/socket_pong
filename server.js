@@ -1,6 +1,6 @@
 // configs
 
-var settings_ip_port = "192.168.0.111:3000"
+var settings_ip_port = "socketpong.local:80"
 
 
 //main
@@ -31,7 +31,7 @@ fs.readFile("./index.tmpl.html", 'utf8', function(err, contents) {
 
 
 
-app.listen(80)
+app.listen(8888)
 
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
@@ -56,7 +56,7 @@ function handler (req, res) {
 
 io.sockets.on('connection', function (socket) {
   
-  socket.emit('accelerometer', socket.id)
+socket.emit('startAccelerometer', socket.id)
   // alla connessione andrebbe fatto check max_clients
 
   socket.on('osc', function(data){
@@ -90,13 +90,25 @@ io.sockets.on('connection', function (socket) {
 	
 
 	socket.on('disconnect',  function(data) {
-  
-		console.log(socket.id + " disconnected")
+		
+		console.log(socket.id + " disconnecting...")
 		
 		var clientId = socket.id
 		client.send('/detachClient', clientId)
-	
+		
+		console.log(socket.id + " disconnecting")
+
 	})
+	
+	
+//	socket.on('detachMe',  function(data) {
+//		
+//		var clientId = socket.id
+//		client.send('/detachClient', clientId)
+//		
+//		console.log(socket.id + " disconnected")
+
+//	})
 
 })
 
